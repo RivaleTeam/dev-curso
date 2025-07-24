@@ -1,4 +1,4 @@
-import { InternalServerError, MethodNotAllowedError } from "./erros.js";
+import { InternalServerError, MethodNotAllowedError, ConflictError } from "./erros.js";
 
 function onNoMatchHandler(request, response) {
   const method = request.method;
@@ -14,11 +14,17 @@ function onNoMatchHandler(request, response) {
 }
 
 function onErrorHandler(error, request, response) {
+
+    if (
+        error instanceof ConflictError || error instanceof UnauthorizedError) {
+        return response.status(error.statusCode).json(error);
+    }  
+
     const onError = new InternalServerError({
         cause: error,
     });
 
-    response.status(onError.statusCode).json({onError})
+    response.status(onError.statusCode).json(onError)
 }
 
 const controller = {

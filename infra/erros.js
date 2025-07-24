@@ -17,7 +17,7 @@ export class BadRequestError extends Error {
 
 //status code: 401 - Erro na autenticação
 export class UnauthorizedError extends Error {
-  constructor(message = "Acesso não autorizado", cause) {
+  constructor({message = "Acesso não autorizado", cause}) {
     super(message, { cause });
     this.name = "UnauthorizedError";
     this.statusCode = 401;
@@ -97,7 +97,7 @@ export class MethodNotAllowedError extends Error {
 
 //status code: 409 quando há conflitos como "email já registrado", etc.
 export class ConflictError extends Error {
-  constructor(message = "Conflito com o estado atual do recurso", cause) {
+  constructor({ message = "Serviço temporariamente indisponível", cause = null }) {
     super(message, { cause });
     this.name = "ConflictError";
     this.statusCode = 409;
